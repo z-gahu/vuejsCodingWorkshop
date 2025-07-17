@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>바닐라자바스크립트 계산기</title>
+        <style>
+            p, input { font-family: monospace;}
+            p{white-space: pre;}
+        </style>
+    </head>
+    <!--초기화 함수에 바인팅-->
+    <body>
+        <div id="app">
+            <p>x<input v-model="x" class="calc-x-input" value="0"></p>
+            <p>y<input v-model="y" class="calc-y-input" value="0"></p>
+            <p>----------------------------</p>
+            <p>=<span class="calc-result">{{result}}</span></p>
+        </div>
+
+        <!-- <script src="https://unpkg.com/vue/dist/vue.js"></script> --><!--지원하지 않음-->
+        <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script> <!--vuejs3에서 new Vue 지원하지 않음-->
+        <!-- <script src="https://cdn.jsdelivr.net/npm/vue@2/dist/vue.js"></script> --><!--vuejs2에서 오류는 없지만 실행되지 않음-->
+        <script type="text/javascript">
+            function isNotNumbericValue(value) {
+                return isNaN(value) || !isFinite(value)
+            }
+
+            const { createApp } = Vue; //vuejs3에서 앱초기화
+            createApp({
+                data() {
+                    return {
+                        x: 0,
+                        y: 0,
+                        lastResult: 0
+                    }
+                },
+                computed: {
+                    result() {
+                        let x = parseInt(this.x);
+                        if (isNotNumbericValue(x))
+                            return this.lastResult;
+                        let y = parseInt(this.y);
+                        if (isNotNumbericValue(y))
+                            return this.lastResult;
+
+                        this.lastResult = x + y;
+
+                        return this.lastResult
+                    }
+                },
+            }).mount('#app'); //돔연결
+
+            // var calc = new Vue({ // 앱초기화(vuejs2에서만 지원)
+            //     el:'#app', //돔연결
+            //     data: { x: 0, y: 0, lastResult: 0 }, //앱에 추가된 변수
+            //     computed: {
+            //         result: function() {
+            //             let x = parseInt(this.x);
+            //             if (isNotNumbericValue(x))
+            //                 return this.lastResult;
+            //             let y = parseInt(this.y);
+            //             if (isNotNumbericValue(y))
+            //                 return this.lastResult;
+
+            //             this.lastResult = x + y;
+
+            //             return this.lastResult
+            //         }
+            //     }
+            // })
+        </script>
+    </body>
+</html>
